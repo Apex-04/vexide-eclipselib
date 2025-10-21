@@ -25,10 +25,10 @@ mod eclipselib; // Use eclipselib
 
 struct Robot { 
     controller: Controller,
-    left_drive: eclipselib::MotorGroup,
-    right_drive: eclipselib::MotorGroup,
-    odometry: eclipselib::Odometry,
-    intake: eclipselib::AdvMotor
+    left_drive: eclipselib::motors::MotorGroup,
+    right_drive: eclipselib::motors::MotorGroup,
+    odometry: eclipselib::odometry::Odometry, 
+    smartmtr: eclipselib::motors::AdvMotor
 
 }
 
@@ -41,9 +41,6 @@ impl Robot{
     }
     async fn skills_auto(&mut self) {
 
-    }
-    async fn lobstah_test(&mut self){
-        
     }
 }
 
@@ -63,7 +60,7 @@ impl SelectCompete for Robot {
         println!("Driver!");
         // Define booleans for motor controllers 
         let mut drive_bool: bool = true;
-        let mut intake_toggle_bool: bool = false;
+        let mut mtr_toggle_bool: bool = false;
 
         loop{
             let controller_state = self.controller.state().unwrap_or_default();
@@ -83,11 +80,11 @@ impl SelectCompete for Robot {
                 self.right_drive.set_voltage((forward_speed - turn_speed)*Motor::V5_MAX_VOLTAGE);
             }
             if controller_state.button_l2.is_pressed(){
-                self.intake.toggle(12.0);
-                intake_toggle_bool = true;
-            } else if intake_toggle_bool {
-                self.intake.stop();
-                intake_toggle_bool = false;
+                self.smartmtr.toggle(12.0);
+                mtr_toggle_bool = true;
+            } else if mtr_toggle_bool {
+                self.smartmtr.stop();
+                mtr_toggle_bool = false;
             }
         }
     }
@@ -99,22 +96,22 @@ async fn main(peripherals: Peripherals) {
     let robot = Robot {
         controller: peripherals.primary_controller,
         
-        left_drive: eclipselib::MotorGroup::new3_mtr_group(
+        left_drive: eclipselib::motors::MotorGroup::new3_mtr_group(
             Motor::new(peripherals.port_1, Gearset::Blue, Direction::Forward),
             Motor::new(peripherals.port_2, Gearset::Blue, Direction::Forward),
             Motor::new(peripherals.port_3, Gearset::Blue, Direction::Forward), 
         ),
-        right_drive: eclipselib::MotorGroup::new3_mtr_group(
+        right_drive: eclipselib::motors::MotorGroup::new3_mtr_group(
             Motor::new(peripherals.port_4, Gearset::Blue, Direction::Forward), 
             Motor::new(peripherals.port_5, Gearset::Blue, Direction::Forward), 
             Motor::new(peripherals.port_6, Gearset::Blue, Direction::Forward), 
         ),
-        odometry: eclipselib::Odometry::new2_rot_odom(
+        odometry: eclipselib::odometry::Odometry::new2_rot_odom(
             RotationSensor::new(peripherals.port_7, Direction::Forward),
             RotationSensor::new(peripherals.port_8, Direction::Forward),
             InertialSensor::new(peripherals.port_9),
         ),
-        intake: eclipselib::AdvMotor::new(
+        smartmtr: eclipselib::motors::AdvMotor::new(
             Motor::new(peripherals.port_10, Gearset::Blue, Direction::Forward),
         )
 
@@ -127,8 +124,6 @@ async fn main(peripherals: Peripherals) {
                 route!("Match Auto", Robot::match_auto),
                 route!("Elims Auto", Robot::elims_auto),
                 route!("Skills", Robot::skills_auto),
-                route!("Lobstah Test", Robot::lobstah_test),
-
             ],
         ))
         .await;
