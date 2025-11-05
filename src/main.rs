@@ -4,7 +4,7 @@
 /*    File: main.rs                                 */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Sep 23rd 2025 12:00PM           */
-/*    Date Modified: Oct 20th 2025 12:30PM          */
+/*    Date Modified: Nov 05th 2025 02:42PM          */
 /*    Team: BBR1                                    */
 /*    Description: Example Main file                */
 /*                                                  */
@@ -27,7 +27,7 @@ struct Robot {
     controller: Controller,
     left_drive: eclipselib::motors::MotorGroup,
     right_drive: eclipselib::motors::MotorGroup,
-    odometry: eclipselib::odometry::Odometry, 
+    odometry: eclipselib::odometry::Dual_Track_Odometry, 
     smartmtr: eclipselib::motors::AdvMotor
 
 }
@@ -106,7 +106,7 @@ async fn main(peripherals: Peripherals) {
             Motor::new(peripherals.port_5, Gearset::Blue, Direction::Forward), 
             Motor::new(peripherals.port_6, Gearset::Blue, Direction::Forward), 
         ),
-        odometry: eclipselib::odometry::Odometry::new2_rot_odom(
+        odometry: eclipselib::odometry::Dual_Track_Odometry::new(
             RotationSensor::new(peripherals.port_7, Direction::Forward),
             RotationSensor::new(peripherals.port_8, Direction::Forward),
             InertialSensor::new(peripherals.port_9),

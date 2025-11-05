@@ -4,7 +4,7 @@
 /*    File: pneumatics.rs                           */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Oct 21st 2025 11:20AM          */
+/*    Date Modified: Nov 5th 2025 10:30AM           */
 /*    Team: BBR1                                    */
 /*    Description: Eclipselib pneumnatics           */ 
 /*                 definitions                      */
@@ -26,11 +26,15 @@ impl Solonoid{
         }
 
     }
+    // Toggle is not very verbose as it doesnt tell you exactly which state it's in, best practice only use set_high and set_low
     pub fn set_high(&mut self){
         let _ = self.solonoid.set_high();
     }
     pub fn set_low(&mut self){
         let _ = self.solonoid.set_low();
+    }
+    pub fn toggle(&mut self){
+        let _ = self.solonoid.toggle();
     }
 }
 
@@ -38,24 +42,29 @@ impl Solonoid{
 
 // Using ADI devices instead of just taking the ports to make it easier on the backend
 pub struct SolonoidGroup{
-    adi_devices: vec::Vec<AdiDigitalOut>
+    solonoids: vec::Vec<AdiDigitalOut>
 }
 impl SolonoidGroup{
     pub fn new2_adi_group(device1: AdiPort, device2: AdiPort) -> Self{
         Self{
-            adi_devices: vec![AdiDigitalOut::new(device1), AdiDigitalOut::new(device2)]
+            solonoids: vec![AdiDigitalOut::new(device1), AdiDigitalOut::new(device2)]
         }
     }
 
-    // Toggle is not very verbose as ut doesnt tell you exactly which state it's in, best practice only use set_high and set_low
+    // Toggle is not very verbose as it doesnt tell you exactly which state it's in, best practice only use set_high and set_low
     pub fn set_high(&mut self){
-        for adi_device in self.adi_devices.iter_mut(){
-            let _ = adi_device.set_high();
+        for solonoid in self.solonoids.iter_mut(){
+            let _ = solonoid.set_high();
         }
     }
     pub fn set_low(&mut self){
-        for adi_device in self.adi_devices.iter_mut(){
-            let _ = adi_device.set_low();
+        for solonoid in self.solonoids.iter_mut(){
+            let _ = solonoid.set_low();
+        }
+    }
+        pub fn toggle(&mut self){
+        for solonoid in self.solonoids.iter_mut(){
+            let _ = solonoid.toggle();
         }
     }
 }

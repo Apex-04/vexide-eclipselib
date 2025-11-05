@@ -22,6 +22,7 @@ pub struct AdvMotor{
 }
 
 impl AdvMotor{
+// Creates a new AdvMotor Object 
 pub fn new(motor:Motor) -> Self{
         Self{motor}
 }
