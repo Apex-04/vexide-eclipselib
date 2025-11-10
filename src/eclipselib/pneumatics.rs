@@ -11,10 +11,11 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use alloc::vec; 
 use vexide::devices::smart::imu::InertialError;
 use vexide::devices::PortError; 
 use vexide::prelude::*;
+extern crate alloc;
+pub use alloc::vec;
 
 pub struct Solonoid{
     solonoid: AdiDigitalOut

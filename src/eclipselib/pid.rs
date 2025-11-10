@@ -1,16 +1,13 @@
 /* ------------------------------------------------ */
 /*                                                  */
 /*    Project: vexide-eclipselib                    */
-/*    File: eclipselib.rs                           */
+/*    File: pid.rs                                  */
 /*    Author: Andrew Bobay                          */
-/*    Date Created: Sep 23rd 2025 12:00PM           */
-/*    Date Modified: Oct 21st 2025 11:00AM          */
+/*    Date Created: Nov 9th 2025 11:30AM            */
+/*    Date Modified: Nov 9th 2025 11:30PM           */
 /*    Team: BBR1                                    */
-/*    Description: eclipselib modules               */
+/*    Description: pid functions                    */
 /*                                                  */
 /* ------------------------------------------------ */
-pub mod pneumatics;
-pub mod motors;
-pub mod drive;
-pub mod odometry;
-pub mod pid;
+
+// Placeholder file

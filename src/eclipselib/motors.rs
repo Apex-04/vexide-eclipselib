@@ -4,7 +4,7 @@
 /*    File: motors.rs                               */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Oct 21st 2025 11:20AM          */
+/*    Date Modified: Nov 10th 2025 10:00AM          */
 /*    Team: BBR1                                    */
 /*    Description: Eclipselib advanced motor        */ 
 /*                 definitions                      */
@@ -12,10 +12,12 @@
 /* ------------------------------------------------ */
 
 
-use alloc::vec; 
+use alloc::vec::Vec;
 use vexide::devices::smart::imu::InertialError;
-use vexide::devices::PortError; 
+use vexide::devices::{PortError, peripherals}; 
 use vexide::prelude::*;
+extern crate alloc;
+pub use alloc::vec;
 
 pub struct AdvMotor{
     motor: Motor
@@ -23,8 +25,8 @@ pub struct AdvMotor{
 
 impl AdvMotor{
 // Creates a new AdvMotor Object 
-pub fn new(motor:Motor) -> Self{
-        Self{motor}
+pub fn new(port: SmartPort, gearset: Gearset, direction: Direction) -> Self{
+        Self{motor: Motor::new(port, gearset, direction)}
 }
 pub fn toggle(&mut self, volts: f64){
     let _ = self.motor.set_voltage(volts);
@@ -67,43 +69,35 @@ pub async fn spin_for(&mut self, target: f64, p_value: f64) {
        let _ = self.motor.brake(BrakeMode::Hold);
    }
 }
-
-pub struct MotorGroup{
-    motors: vec::Vec<Motor>
+pub struct MotorGroup {
+    motors: Vec<Motor>,
 }
 
 impl MotorGroup {
-    pub fn new2_mtr_group(motor1:Motor, motor2:Motor) -> Self {
-        Self{
-            motors: vec![motor1, motor2]
-        }
-    }
-  pub fn new3_mtr_group(motor1:Motor, motor2:Motor, motor3:Motor) -> Self {
-        Self{
-            motors: vec![motor1, motor2, motor3]
-        }
+    pub fn new(motors: Vec<Motor>) -> Self {
+        Self { motors }
     }
 
-    pub fn toggle(&mut self, volts: f64){
-        for motor in self.motors.iter_mut(){
-            // spin all motors in given direction
+    pub fn toggle(&mut self, volts: f64) {
+        for motor in self.motors.iter_mut() {
             let _ = motor.set_voltage(volts);
         }
     }
-    pub fn stop(&mut self){
-        for motor in self.motors.iter_mut(){
-            // spin all motors in given direction
-           let _ = motor.set_voltage(0.0);
+
+    pub fn stop(&mut self) {
+        for motor in self.motors.iter_mut() {
+            let _ = motor.set_voltage(0.0);
         }
     }
-    // uses a p-loop to move a motors to their target
-    pub fn spin_for(&mut self, distance: f64, volts:f64){
-        for motor in self.motors.iter_mut(){
-            // Implement P Loop
+
+    pub fn spin_for(&mut self, distance: f64, volts: f64) {
+        for motor in self.motors.iter_mut() {
+            // Implement P loop here later
         }
     }
-    pub fn set_voltage(&mut self, volts: f64){
-        for motor in self.motors.iter_mut(){
+
+    pub fn set_voltage(&mut self, volts: f64) {
+        for motor in self.motors.iter_mut() {
             let _ = motor.set_voltage(volts);
         }
     }

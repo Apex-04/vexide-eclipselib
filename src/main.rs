@@ -12,8 +12,6 @@
 
 #![no_main]
 #![no_std]
-extern crate alloc;
-
 
 use autons::{
     prelude::*,
@@ -21,7 +19,8 @@ use autons::{
 };
 use vexide::prelude::*;
 mod eclipselib; // Use eclipselib
-
+extern crate alloc;
+pub use alloc::vec;
 
 struct Robot { 
     controller: Controller,
@@ -96,23 +95,23 @@ async fn main(peripherals: Peripherals) {
     let robot = Robot {
         controller: peripherals.primary_controller,
         
-        left_drive: eclipselib::motors::MotorGroup::new3_mtr_group(
+        left_drive: eclipselib::motors::MotorGroup::new(vec![
             Motor::new(peripherals.port_1, Gearset::Blue, Direction::Forward),
             Motor::new(peripherals.port_2, Gearset::Blue, Direction::Forward),
             Motor::new(peripherals.port_3, Gearset::Blue, Direction::Forward), 
-        ),
-        right_drive: eclipselib::motors::MotorGroup::new3_mtr_group(
+        ]),
+        right_drive: eclipselib::motors::MotorGroup::new(vec![
             Motor::new(peripherals.port_4, Gearset::Blue, Direction::Forward), 
             Motor::new(peripherals.port_5, Gearset::Blue, Direction::Forward), 
             Motor::new(peripherals.port_6, Gearset::Blue, Direction::Forward), 
-        ),
+        ]),
         odometry: eclipselib::odometry::Dual_Track_Odometry::new(
             RotationSensor::new(peripherals.port_7, Direction::Forward),
             RotationSensor::new(peripherals.port_8, Direction::Forward),
             InertialSensor::new(peripherals.port_9),
         ),
         smartmtr: eclipselib::motors::AdvMotor::new(
-            Motor::new(peripherals.port_10, Gearset::Blue, Direction::Forward),
+            peripherals.port_10, Gearset::Blue, Direction::Forward,
         )
 
     };

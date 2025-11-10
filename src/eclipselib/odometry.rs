@@ -4,14 +4,13 @@
 /*    File: odometry.rs                             */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Oct 21st 2025 02:40PM          */
+/*    Date Modified: Nov 10th 2025 10:00AM          */
 /*    Team: BBR1                                    */
 /*    Description: Eclipselib Odometry              */
 /*                 definitions                      */
 /*                                                  */
 /* ------------------------------------------------ */
 
-use alloc::vec; 
 use vexide::devices::smart::imu::InertialError;
 use vexide::devices::PortError; 
 use vexide::devices::smart::rotation;
