@@ -4,7 +4,7 @@
 /*    File: odometry.rs                             */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Nov 10th 2025 10:00AM          */
+/*    Date Modified: Nov 17th 2025 3:00PM           */
 /*    Team: BBR1                                    */
 /*    Description: Eclipselib Odometry              */
 /*                 definitions                      */
@@ -17,12 +17,13 @@ use vexide::devices::smart::rotation;
 use vexide::prelude::*;
 
 
-pub struct Dual_Track_Odometry{
+pub struct DualTrackOdometry{
     rotation_back: RotationSensor,
     rotation_front: RotationSensor,
     inertial: InertialSensor
 }
-impl Dual_Track_Odometry{
+#[allow(unused)]
+impl DualTrackOdometry{
     pub fn new(rotation_back:RotationSensor, rotation_front:RotationSensor, inertial:InertialSensor) -> Self{
         Self{rotation_back, rotation_front, inertial}
     }
@@ -47,12 +48,14 @@ impl Dual_Track_Odometry{
     }
 }
 
-pub struct Tri_Track_Odometry{
+pub struct TriTrackOdometry{
     rotation_left: RotationSensor,
     rotation_right: RotationSensor,
     rotation_back: RotationSensor
 }
-impl Tri_Track_Odometry{
+
+#[allow(unused)]
+impl TriTrackOdometry{
     pub fn new(rotation_left:RotationSensor, rotation_right:RotationSensor, rotation_back:RotationSensor) -> Self{
         Self{rotation_left, rotation_right, rotation_back}
     }

@@ -10,6 +10,10 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
+/* TODO:
+Update Main with the eclipselib::drive
+
+*/
 #![no_main]
 #![no_std]
 
@@ -26,7 +30,7 @@ struct Robot {
     controller: Controller,
     left_drive: eclipselib::motors::MotorGroup,
     right_drive: eclipselib::motors::MotorGroup,
-    odometry: eclipselib::odometry::Dual_Track_Odometry, 
+    odometry: eclipselib::odometry::DualTrackOdometry, 
     smartmtr: eclipselib::motors::AdvMotor
 
 }
@@ -105,7 +109,7 @@ async fn main(peripherals: Peripherals) {
             Motor::new(peripherals.port_5, Gearset::Blue, Direction::Forward), 
             Motor::new(peripherals.port_6, Gearset::Blue, Direction::Forward), 
         ]),
-        odometry: eclipselib::odometry::Dual_Track_Odometry::new(
+        odometry: eclipselib::odometry::DualTrackOdometry::new(
             RotationSensor::new(peripherals.port_7, Direction::Forward),
             RotationSensor::new(peripherals.port_8, Direction::Forward),
             InertialSensor::new(peripherals.port_9),

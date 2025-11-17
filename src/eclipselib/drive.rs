@@ -4,7 +4,7 @@
 /*    File: drive.rs                                */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Nov 5th 2025 10:30AM           */
+/*    Date Modified: Nov 17th 2025 3:00PM           */
 /*    Team: BBR1                                    */
 /*    Description: Eclipselib smart drivetrain      */ 
 /*                 definitions                      */
@@ -26,11 +26,12 @@ pub struct Drivetrain{
     wheel_szie: f64,
     gear_set: Gearset,
     inertial: Option<InertialSensor>,
-    dual_odom: Option<Dual_Track_Odometry>,
-    tri_odom: Option<Tri_Track_Odometry>,
+    dual_odom: Option<DualTrackOdometry>,
+    tri_odom: Option<TriTrackOdometry>,
 
 }
 
+#[allow(unused)]
 impl Drivetrain{
 
 
