@@ -10,7 +10,7 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::{devices::adi::encoder, prelude::*};
+use vexide::prelude::*;
 
 /// Calculate kp, ki, and kd based on Ziegler–Nichols tuning rules.
 ///
@@ -104,8 +104,6 @@ impl PIDController {
     // calulate the output given it's position
     pub fn calculate(&mut self, encoder: f64){
         
-
-
 
     }
 }

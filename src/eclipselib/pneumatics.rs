@@ -11,8 +11,6 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::devices::smart::imu::InertialError;
-use vexide::devices::PortError; 
 use vexide::prelude::*;
 extern crate alloc;
 pub use alloc::vec;
@@ -20,6 +18,7 @@ pub use alloc::vec;
 pub struct Solonoid{
     solonoid: AdiDigitalOut
 }
+#[allow(unused)]
 impl Solonoid{
     pub fn new(port: AdiPort) -> Self{
         Self{
@@ -45,6 +44,7 @@ impl Solonoid{
 pub struct SolonoidGroup{
     solonoids: vec::Vec<AdiDigitalOut>
 }
+#[allow(unused)]
 impl SolonoidGroup{
     pub fn new2_adi_group(device1: AdiPort, device2: AdiPort) -> Self{
         Self{

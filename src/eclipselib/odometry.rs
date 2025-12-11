@@ -13,7 +13,6 @@
 
 use vexide::devices::smart::imu::InertialError;
 use vexide::devices::PortError; 
-use vexide::devices::smart::rotation;
 use vexide::prelude::*;
 
 

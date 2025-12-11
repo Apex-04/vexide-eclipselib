@@ -12,13 +12,10 @@
 /* ------------------------------------------------ */
 
 
-use alloc::vec::Vec;
-use vexide::devices::smart::imu::InertialError;
-use vexide::devices::{PortError, peripherals}; 
+use alloc::vec::Vec; 
 use vexide::prelude::*;
 extern crate alloc;
-pub use alloc::vec;
-use core::time::{self, Duration};
+use core::time::Duration;
 
 
 pub struct AdvMotor{
