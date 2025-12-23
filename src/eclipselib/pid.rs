@@ -4,8 +4,7 @@
 /*    File: pid.rs                                  */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Nov 9th 2025 11:30AM            */
-/*    Date Modified: Nov 17th 2025 3:00PM           */
-/*    Team: BBR1                                    */
+/*    Date Modified: Dec 10th 2025 10:30AM          */
 /*    Description: pid functions                    */
 /*                                                  */
 /* ------------------------------------------------ */
@@ -20,12 +19,12 @@ use vexide::prelude::*;
 /// - `mode`: controller type (1–7)
 ///
 /// # Modes
-/// 1: P controller  
-/// 2: PI controller  
-/// 3: PD controller  
-/// 4: Classic PID  
-/// 5: Pessen Integral Rule  
-/// 6: Some Overshoot  
+/// 1: P controller
+/// 2: PI controller
+/// 3: PD controller
+/// 4: Classic PID
+/// 5: Pessen Integral Rule
+/// 6: Some Overshoot
 /// 7: No Overshoot
 pub fn calc_gains(ku: f64, tu: f64, mode: i8) -> (f64, f64, f64) {
     let (mut kp, mut ki, mut kd) = (0.0, 0.0, 0.0);
@@ -94,16 +93,16 @@ pub struct PIDController {
 #[allow(unused)]
 impl PIDController {
     pub fn set_gains(kp: f64, ki: f64, kd: f64) -> Self {
-        Self {kp,ki,kd,target: None}
+        Self {
+            kp,
+            ki,
+            kd,
+            target: None,
+        }
     }
 
     // set's the target of the PID controller
-    pub fn set_target(){
-
-    }
+    pub fn set_target() {}
     // calulate the output given it's position
-    pub fn calculate(&mut self, encoder: f64){
-        
-
-    }
+    pub fn calculate(&mut self, encoder: f64) {}
 }

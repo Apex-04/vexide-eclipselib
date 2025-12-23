@@ -4,13 +4,14 @@
 /*    File: eclipselib.rs                           */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Sep 23rd 2025 12:00PM           */
-/*    Date Modified: Oct 21st 2025 11:00AM          */
-/*    Team: BBR1                                    */
+/*    Date Modified: Dec 12th 2025 10:30AM          */
 /*    Description: eclipselib modules               */
 /*                                                  */
 /* ------------------------------------------------ */
-pub mod pneumatics;
-pub mod motors;
 pub mod drive;
+pub mod motors;
 pub mod odometry;
 pub mod pid;
+pub mod pneumatics;
+pub mod spline;
+pub mod swerve;

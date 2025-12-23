@@ -4,21 +4,18 @@
 /*    File: drive.rs                                */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Nov 18th 2025 3:00PM           */
-/*    Team: BBR1                                    */
-/*    Description: Eclipselib smart drivetrain      */ 
+/*    Date Modified: Dec 12th 2025 10:30AM          */
+/*    Description: Eclipselib smart drivetrain      */
 /*                 definitions                      */
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::devices::controller::ControllerState;
-use vexide::prelude::*;
-use crate::eclipselib::motors::*;
-use crate::eclipselib::odometry::*;
+use vexide::{devices::controller::ControllerState, prelude::*};
 
+use crate::eclipselib::{motors::*, odometry::*};
 
 // An Advanced drive that uses eclipselib:odomotry for advanced movement capabilitys
-pub struct Drivetrain{
+pub struct Drivetrain {
     left_drive: MotorGroup,
     right_drive: MotorGroup,
     gear_ratio: f64,
@@ -30,9 +27,8 @@ pub struct Drivetrain{
 }
 
 #[allow(unused)]
-impl Drivetrain{
-
-        pub fn new_with_imu(
+impl Drivetrain {
+    pub fn new_with_imu(
         left_drive: MotorGroup,
         right_drive: MotorGroup,
         gear_ratio: f64,
@@ -52,7 +48,7 @@ impl Drivetrain{
         }
     }
 
-      pub fn new_with_dual_odom(
+    pub fn new_with_dual_odom(
         left_drive: MotorGroup,
         right_drive: MotorGroup,
         gear_ratio: f64,
@@ -72,7 +68,7 @@ impl Drivetrain{
         }
     }
 
-        pub fn new_with_tri_odom(
+    pub fn new_with_tri_odom(
         left_drive: MotorGroup,
         right_drive: MotorGroup,
         gear_ratio: f64,
@@ -92,31 +88,36 @@ impl Drivetrain{
         }
     }
 
-
-    pub fn drive(controller_state: ControllerState){
+    pub fn drive(controller_state: ControllerState) {
         /* */
     }
 }
 
-
-pub struct XDrive{
+pub struct XDrive {
     east_drive: MotorGroup, // Front Left && Back Right
     west_drive: MotorGroup, // Front Right && Back Left
     gear_ratio: f64,
     wheel_size: f64,
-    gear_set: Gearset 
+    gear_set: Gearset,
 }
 
 #[allow(unused)]
-impl XDrive{
-    fn new(east_drive: MotorGroup, west_drive: MotorGroup, gear_ratio: f64, wheel_size: f64, gear_set: Gearset)-> Self{
-        Self{east_drive, west_drive, gear_ratio, wheel_size, gear_set}
+impl XDrive {
+    fn new(
+        east_drive: MotorGroup,
+        west_drive: MotorGroup,
+        gear_ratio: f64,
+        wheel_size: f64,
+        gear_set: Gearset,
+    ) -> Self {
+        Self {
+            east_drive,
+            west_drive,
+            gear_ratio,
+            wheel_size,
+            gear_set,
+        }
     }
 
-    fn drive(controller_state: ControllerState){
-
-    }
+    fn drive(controller_state: ControllerState) {}
 }
-
-
-
