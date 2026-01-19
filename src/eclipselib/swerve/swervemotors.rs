@@ -1,10 +1,10 @@
 /* ------------------------------------------------ */
 /*                                                  */
-/*    Project: vexide-eclipselib                    */
+/*    Project: vexide-eclipselib / swerve           */
 /*    File: swervemotor.rs                          */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Dec 12th 2025 10:30AM           */
-/*    Date Modified: Dec 12th 2025 2:30PM           */
+/*    Date Modified: Jan 18th 2025 08:40PM          */
 /*    Description: swerve motors modules            */
 /*                                                  */
 /* ------------------------------------------------ */

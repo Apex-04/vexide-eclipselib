@@ -1,10 +1,10 @@
 /* ------------------------------------------------ */
 /*                                                  */
-/*    Project: vexide-swervelib                     */
+/*    Project: vexide-eclipselib / swerve           */
 /*    File: swervedrive.rs                          */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Sep 23rd 2025 12:00PM           */
-/*    Date Modified: Dec 12th 2025 10:30AM          */
+/*    Date Modified: Jan 18th 2025 08:40PM          */
 /*    Description: swerve drive module              */
 /*                                                  */
 /* ------------------------------------------------ */
@@ -68,7 +68,7 @@ impl QuadSwerveDrive {
         }
     }
 
-    pub fn drive(controller_state: ControllerState) {
+    pub fn user_control(controller_state: ControllerState) {
         let axis3 = controller_state.left_stick.x();
         let axis4 = controller_state.left_stick.y();
         let axis1 = controller_state.right_stick.x();
