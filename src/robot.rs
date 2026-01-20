@@ -8,7 +8,8 @@
 /*    Description: Robot Constructors               */
 /*                                                  */
 /* ------------------------------------------------ */
-
+use vexide::prelude::*;
+mod eclipselib;
 /// How to use robot.rs
 ///
 /// robot.rs is a dedicated file to define robot subsystems.
@@ -18,6 +19,14 @@
 /// HOWEVER: we understand every robot is different, and we figured we'd provide a template for you to create dedicated subsystems.
 /// below we included a very stripped down subsystem for a lift.
 
-struct LiftExample {}
+struct LiftExample {
+    motor: motor::AdvMotor
+    encoder: Rotation,
+
+
+}
 #[allow(unused)]
-impl LiftExample {}
+impl LiftExample {
+
+
+}

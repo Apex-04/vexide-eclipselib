@@ -39,39 +39,10 @@ impl AdvMotor {
         let _ = self.motor.set_voltage(volts);
     }
 
-    pub async fn pid_spin_for(&mut self, target: f64, kp: f64, ki: f64, kd: f64) {
-        let _ = self.motor.set_position(Position::from_degrees(0.0));
+    pub fn spin_to(&mut self, volts: f64){
 
-        let mut last_error = 0.0;
-        let mut integral = 0.0;
-
-        while let Ok(current_position) = self.motor.position() {
-            let current_degrees = current_position.as_degrees();
-            let error = target - current_degrees;
-
-            if error.abs() < 0.5 {
-                break;
-            }
-
-            integral += error; // I-term (scaled by loop frequency)
-            let derivative = error - last_error; // D-term (change per loop)
-            last_error = error;
-
-            // PID control output
-            let output = (kp * error) + (ki * integral) + (kd * derivative);
-
-            // Clamp and apply to motor
-            let max_voltage = self.motor.max_voltage();
-            let _ = self
-                .motor
-                .set_voltage(output.clamp(-max_voltage, max_voltage));
-
-            // small wait to keep dt constant
-            vexide::time::sleep(Duration::from_millis(10)).await;
-        }
-
-        let _ = self.motor.brake(BrakeMode::Hold);
     }
+
 }
 
 pub struct MotorGroup {
@@ -96,13 +67,13 @@ impl MotorGroup {
         }
     }
 
-    pub fn spin_for(&mut self, distance: f64, volts: f64) {
+    pub fn spin_to(&mut self, distance: f64, volts: f64) {
         for motor in self.motors.iter_mut() {
             // Implement P loop here later
         }
     }
 
-    pub fn set_voltage(&mut self, volts: f64) {
+    pub fn spin(&mut self, volts: f64) {
         for motor in self.motors.iter_mut() {
             let _ = motor.set_voltage(volts);
         }

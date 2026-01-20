@@ -27,8 +27,8 @@ pub struct Drivetrain {
 }
 
 #[allow(unused)]
-impl Drivetrain {
-    pub fn new_with_imu(
+impl TankDrive {
+    pub fn new_simpledrive (
         left_drive: MotorGroup,
         right_drive: MotorGroup,
         gear_ratio: f64,
@@ -48,7 +48,7 @@ impl Drivetrain {
         }
     }
 
-    pub fn new_with_dual_odom(
+    pub fn new_odomdrive(
         left_drive: MotorGroup,
         right_drive: MotorGroup,
         gear_ratio: f64,
@@ -66,29 +66,10 @@ impl Drivetrain {
             dual_odom: Some(dual),
             tri_odom: None,
         }
-    }
-
-    pub fn new_with_tri_odom(
-        left_drive: MotorGroup,
-        right_drive: MotorGroup,
-        gear_ratio: f64,
-        wheel_size: f64,
-        gear_set: Gearset,
-        tri: TriTrackOdometry,
-    ) -> Self {
-        Self {
-            left_drive,
-            right_drive,
-            gear_ratio,
-            wheel_szie: wheel_size,
-            gear_set,
-            inertial: None,
-            dual_odom: None,
-            tri_odom: Some(tri),
         }
     }
 
-    pub fn drive(controller_state: ControllerState) {
+    pub fn opc_drive(controller_state: ControllerState) {
         /* */
     }
 }
@@ -119,5 +100,7 @@ impl XDrive {
         }
     }
 
-    fn drive(controller_state: ControllerState) {}
+    fn opc_drive(&mut self, controller_state: ControllerState) {}
+
+    fn drive_to_coordinates(&mut self, controller_state: ControllerState) {}
 }

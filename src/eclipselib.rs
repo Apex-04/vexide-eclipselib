@@ -9,7 +9,7 @@
 /*                                                  */
 /* ------------------------------------------------ */
 pub mod drive;
-pub mod motors;
+pub mod motor;
 pub mod odometry;
 pub mod pid;
 pub mod pneumatics;

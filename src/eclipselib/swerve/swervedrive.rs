@@ -38,6 +38,21 @@ impl DualSwerveDrive {
             position: swervelib::spline::spline(0.0, 0.0, 0.0),
         }
     }
+
+    pub fn opc_drive(&mut self, controller_state: ControllerState) {
+        let axis3 = controller_state.left_stick.x();
+        let axis4 = controller_state.left_stick.y();
+        let axis1 = controller_state.right_stick.x();
+
+    }
+
+    pub fn drive_to_coordinates(&mut self, target: swervelib::spline::Spline) {
+        let north_error = target.north() - self.position.north(); // Δy
+        let west_error = target.west() - self.position.west(); // Δx
+                                                               // angle robot must face to go directly toward the target
+        let angle = north_error.atan2(west_error) * (180.0 / PI);
+        let error = (north_error.powf(2) + west_error.powf(2)).powf(0.5);
+    }
 }
 
 pub struct QuadSwerveDrive {
@@ -68,10 +83,11 @@ impl QuadSwerveDrive {
         }
     }
 
-    pub fn user_control(controller_state: ControllerState) {
+    pub fn opc_drive(&mut self, controller_state: ControllerState) {
         let axis3 = controller_state.left_stick.x();
         let axis4 = controller_state.left_stick.y();
         let axis1 = controller_state.right_stick.x();
+
     }
 
     pub fn drive_to_coordinates(&mut self, target: swervelib::spline::Spline) {

@@ -22,8 +22,8 @@ use autons::{
 };
 use vexide::prelude::*;
 mod robot;
-use crate::swervelib::spline::spline; // makes things easier to create splines in line
 mod eclipselib;
+use crate
 extern crate alloc;
 pub use alloc::vec;
 
