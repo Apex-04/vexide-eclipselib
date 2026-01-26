@@ -4,51 +4,43 @@
 /*    File: swervemod.rs                            */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Nov 9th 2025 11:30AM            */
-/*    Date Modified: Jan 18th 2025 08:40PM          */
+/*    Date Modified: Jan 25th 2025 10:30PM          */
 /*    Description: swerve modules                   */
 /*                                                  */
 /* ------------------------------------------------ */
 
 use vexide::{devices::PortError, prelude::*};
 
-use crate::swervelib;
+const WHEEL_SIZE: f64 = 3.25;
+
 pub struct SwerveModule {
-    smartmtr_top1: swervelib::swervemotors::SwerveMotor,
-    smartmtr_bottom1: swervelib::swervemotors::SwerveMotor,
-    smartmtr_top2: Option<swervelib::swervemotors::SwerveMotor>,
-    smartmtr_bottom2: Option<swervelib::swervemotors::SwerveMotor>,
+    smartmtr_top: Vec<Motor>,
+    smartmtr_bottom: Vec<Motor>,
     azimuth: RotationSensor,
 }
+
 #[allow(unused)]
 impl SwerveModule {
-    /// Create a standard 2-motor swerve module
-    pub fn new22w(
-        smartmtr_top1: swervelib::swervemotors::SwerveMotor,
-        smartmtr_bottom1: swervelib::swervemotors::SwerveMotor,
-        azimuth: RotationSensor,
-    ) -> Self {
+    /// Create a standard 2-motor swerve module (one top, one bottom)
+    pub fn new22w(smartmtr_top: Motor, smartmtr_bottom: Motor, azimuth: RotationSensor) -> Self {
         Self {
-            smartmtr_top1,
-            smartmtr_bottom1,
-            smartmtr_top2: None,
-            smartmtr_bottom2: None,
+            smartmtr_top: vec![smartmtr_top],
+            smartmtr_bottom: vec![smartmtr_bottom],
             azimuth,
         }
     }
 
-    /// Create an 44w swerve module
+    /// Create a 4-motor swerve module (two top, two bottom)
     pub fn new44w(
-        smartmtr_top1: swervelib::swervemotors::SwerveMotor,
-        smartmtr_top2: swervelib::swervemotors::SwerveMotor,
-        smartmtr_bottom1: swervelib::swervemotors::SwerveMotor,
-        smartmtr_bottom2: swervelib::swervemotors::SwerveMotor,
+        smartmtr_top1: Motor,
+        smartmtr_top2: Motor,
+        smartmtr_bottom1: Motor,
+        smartmtr_bottom2: Motor,
         azimuth: RotationSensor,
     ) -> Self {
         Self {
-            smartmtr_top1,
-            smartmtr_bottom1,
-            smartmtr_top2: Some(smartmtr_top2),
-            smartmtr_bottom2: Some(smartmtr_bottom2),
+            smartmtr_top: vec![smartmtr_top1, smartmtr_top2],
+            smartmtr_bottom: vec![smartmtr_bottom1, smartmtr_bottom2],
             azimuth,
         }
     }

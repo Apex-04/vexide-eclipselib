@@ -4,7 +4,7 @@
 /*    File: odometry.rs                             */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Dec 10th 2025 10:30AM          */
+/*    Date Modified: Jan 25th 2025 10:30PM          */
 /*    Description: Eclipselib Odometry              */
 /*                 definitions                      */
 /*                                                  */
@@ -15,13 +15,13 @@ use vexide::{
     prelude::*,
 };
 
-pub struct DualTrackOdometry {
+pub struct Odometry {
     rotation_back: RotationSensor,
     rotation_front: RotationSensor,
     inertial: InertialSensor,
 }
 #[allow(unused)]
-impl DualTrackOdometry {
+impl Odometry {
     pub fn new(
         rotation_back: RotationSensor,
         rotation_front: RotationSensor,
@@ -53,47 +53,5 @@ impl DualTrackOdometry {
             .rotation_front
             .set_position(Position::from_degrees(0.0));
         let _ = self.inertial.set_heading(0.0);
-    }
-}
-
-pub struct TriTrackOdometry {
-    rotation_left: RotationSensor,
-    rotation_right: RotationSensor,
-    rotation_back: RotationSensor,
-}
-
-#[allow(unused)]
-impl TriTrackOdometry {
-    pub fn new(
-        rotation_left: RotationSensor,
-        rotation_right: RotationSensor,
-        rotation_back: RotationSensor,
-    ) -> Self {
-        Self {
-            rotation_left,
-            rotation_right,
-            rotation_back,
-        }
-    }
-
-    pub fn update_position(&mut self) {
-        // Function Body
-    }
-
-    pub fn get_back_position(&mut self) -> Result<Position, PortError> {
-        self.rotation_back.position()
-    }
-    pub fn get_right_position(&mut self) -> Result<Position, PortError> {
-        self.rotation_right.position()
-    }
-    pub fn get_left_position(&mut self) -> Result<Position, PortError> {
-        self.rotation_left.position()
-    }
-    pub fn reset(&mut self) {
-        let _ = self.rotation_back.set_position(Position::from_degrees(0.0));
-        let _ = self.rotation_left.set_position(Position::from_degrees(0.0));
-        let _ = self
-            .rotation_right
-            .set_position(Position::from_degrees(0.0));
     }
 }

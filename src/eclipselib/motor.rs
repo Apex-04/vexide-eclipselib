@@ -4,46 +4,13 @@
 /*    File: motors.rs                               */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Dec 12th 2025 10:30AM          */
+/*    Date Modified: Jan 25th 2025 10:30PM          */
 /*    Description: Eclipselib advanced motor        */
 /*                 definitions                      */
 /*                                                  */
 /* ------------------------------------------------ */
 
-use alloc::vec::Vec;
-
 use vexide::prelude::*;
-extern crate alloc;
-use core::time::Duration;
-
-pub struct AdvMotor {
-    motor: Motor,
-}
-
-#[allow(unused)]
-impl AdvMotor {
-    // Creates a new AdvMotor Object
-    pub fn new(port: SmartPort, gearset: Gearset, direction: Direction) -> Self {
-        Self {
-            motor: Motor::new(port, gearset, direction),
-        }
-    }
-    pub fn toggle(&mut self, volts: f64) {
-        let _ = self.motor.set_voltage(volts);
-    }
-    pub fn stop(&mut self) {
-        let _ = self.motor.set_voltage(0.0);
-    }
-
-    pub fn spin(&mut self, volts: f64) {
-        let _ = self.motor.set_voltage(volts);
-    }
-
-    pub fn spin_to(&mut self, volts: f64){
-
-    }
-
-}
 
 pub struct MotorGroup {
     motors: Vec<Motor>,
@@ -55,27 +22,78 @@ impl MotorGroup {
         Self { motors }
     }
 
-    pub fn toggle(&mut self, volts: f64) {
+    /// Set voltage for all motors in the group (in millivolts, -12000 to 12000)
+    pub fn set_voltage(&mut self, millivolts: i32) -> Result<(), MotorError> {
         for motor in self.motors.iter_mut() {
-            let _ = motor.set_voltage(volts);
+            motor.set_voltage(millivolts)?;
         }
+        Ok(())
     }
 
-    pub fn stop(&mut self) {
-        for motor in self.motors.iter_mut() {
-            let _ = motor.set_voltage(0.0);
-        }
+    /// Stop all motors by setting voltage to 0
+    pub fn stop(&mut self) -> Result<(), MotorError> {
+        self.set_voltage(0)
     }
 
-    pub fn spin_to(&mut self, distance: f64, volts: f64) {
+    /// Brake all motors with the specified brake mode
+    pub fn brake(&mut self, mode: BrakeMode) -> Result<(), MotorError> {
         for motor in self.motors.iter_mut() {
-            // Implement P loop here later
+            motor.set_brake_mode(mode)?;
         }
+        self.set_voltage(0)
     }
 
-    pub fn spin(&mut self, volts: f64) {
-        for motor in self.motors.iter_mut() {
-            let _ = motor.set_voltage(volts);
+    /// Get the average position of all motors in the group (in degrees)
+    pub fn position(&self) -> Result<f64, MotorError> {
+        let mut total = 0.0;
+        for motor in self.motors.iter() {
+            total += motor.position()?.as_degrees();
         }
+        Ok(total / self.motors.len() as f64)
+    }
+
+    /// Get the average velocity of all motors in the group (in RPM)
+    pub fn velocity(&self) -> Result<f64, MotorError> {
+        let mut total = 0.0;
+        for motor in self.motors.iter() {
+            total += motor.velocity()?.as_rpm();
+        }
+        Ok(total / self.motors.len() as f64)
+    }
+
+    /// Reset position for all motors to 0
+    pub fn reset_position(&mut self) -> Result<(), MotorError> {
+        for motor in self.motors.iter_mut() {
+            motor.reset_position()?;
+        }
+        Ok(())
+    }
+
+    /// Get the average temperature of all motors in the group (in Celsius)
+    pub fn temperature(&self) -> Result<f64, MotorError> {
+        let mut total = 0.0;
+        for motor in self.motors.iter() {
+            total += motor.temperature()?.as_celsius();
+        }
+        Ok(total / self.motors.len() as f64)
+    }
+
+    /// Spin motors to a target position using position control
+    pub fn spin_to(&mut self, target_degrees: f64, max_voltage: i32) -> Result<(), MotorError> {
+        for motor in self.motors.iter_mut() {
+            // Set target position for built-in position control
+            motor.set_target(target_degrees, max_voltage)?;
+        }
+        Ok(())
+    }
+
+    /// Get number of motors in the group
+    pub fn len(&self) -> usize {
+        self.motors.len()
+    }
+
+    /// Check if the motor group is empty
+    pub fn is_empty(&self) -> bool {
+        self.motors.is_empty()
     }
 }

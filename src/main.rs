@@ -21,9 +21,9 @@ use autons::{
     simple::{route, SimpleSelect},
 };
 use vexide::prelude::*;
-mod robot;
 mod eclipselib;
-use crate
+mod robot;
+
 extern crate alloc;
 pub use alloc::vec;
 
@@ -34,9 +34,8 @@ struct Robot {
 }
 
 impl Robot {
-    async fn test_auto(&mut self) {
-
-    }
+    async fn test_auto(&mut self) {}
+}
 
 impl SelectCompete for Robot {
     async fn connected(&mut self) {
