@@ -77,7 +77,7 @@ pub struct PIDController {
     kp: f64,
     ki: f64,
     kd: f64,
-    target: Option<f64>,
+    target: f64,
     integral: f64,
     previous_error: f64,
 }
@@ -89,26 +89,21 @@ impl PIDController {
             kp,
             ki,
             kd,
-            target: None,
+            target: 0.0,
             integral: 0.0,
             previous_error: 0.0,
         }
     }
 
+    /// Assigns `target` to the PID object for `.calculate()` to read
     pub fn set_target(&mut self, target: f64) {
-        self.target = Some(target);
+        self.target = target;
     }
 
-    /// Calculate the output given the current position
+    /// Calculate the output given the current position for one itteration of the loop
     pub fn calculate(&mut self, encoder_value: f64) -> f64 {
-        // If no target is set, return 0
-        let target = match self.target {
-            Some(t) => t,
-            None => return 0.0,
-        };
-
         // Calculate error
-        let error = target - encoder_value;
+        let error = self.target - encoder_value;
 
         // Accumulate integral
         self.integral += error;
@@ -127,6 +122,7 @@ impl PIDController {
 
     /// Reset the controller state (integral and previous error)
     pub fn reset(&mut self) {
+        self.target = 0.0;
         self.integral = 0.0;
         self.previous_error = 0.0;
     }
