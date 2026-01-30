@@ -4,7 +4,7 @@
 /*    File: drive.rs                                */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Oct 21st 2025 11:20AM           */
-/*    Date Modified: Jan 25th 2025 10:30PM          */
+/*    Date Modified: Jan 29th 2025 10:30PM          */
 /*    Description: Eclipselib smart drivetrain      */
 /*                 definitions                      */
 /*                                                  */
@@ -12,7 +12,7 @@
 
 use vexide::{devices::controller::ControllerState, prelude::*};
 
-use crate::eclipselib::{motors::*, odometry::*};
+use crate::eclipselib::{driveunits::*, motors::*, odometry::*};
 
 /// Trait defining the interface for tank drive systems
 pub trait TankDrive {
@@ -173,5 +173,38 @@ impl XDrive {
 
     fn opc_drive(&mut self, controller_state: ControllerState) {}
 
-    fn drive_to_coordinates(&mut self, controller_state: ControllerState) {}
+    fn drive_to_coordinates(&mut self, target: Spline) {
+
+}
+
+/// Converts inches to degrees
+pub fn inches_to_degrees(inches: f64, wheel_rad: Option<f64>, external_gear_ratio: f64) -> f64 {
+    let wheel_rad = wheel_rad.unwrap_or(3.25); // Defaults to 3.25 in wheels
+    let wheel_circumference = 2.0 * PI * wheel_rad;
+    let revolutions = (inches / wheel_circumference) * external_gear_ratio;
+    revolutions * 360.0
+}
+
+/// Converts degrees to inches
+pub fn degrees_to_inches(degrees: f64, wheel_rad: Option<f64>, external_gear_ratio: f64) -> f64 {
+    let revolutions = degrees / 360.0;
+    let wheel_rad = wheel_rad.unwrap_or(3.25); // Defaults to 3.25 in wheels
+    let wheel_circumference = 2.0 * PI * wheel_rad;
+    (revolutions / external_gear_ratio) * wheel_circumference
+}
+
+/// Converts centimeters to degrees
+pub fn cm_to_degrees(cm: f64, wheel_rad: Option<f64>, external_gear_ratio: f64) -> f64 {
+    let wheel_rad = wheel_rad.unwrap_or(8.255); // Defaults to 8.255 cm wheels
+    let wheel_circumference = 2.0 * PI * wheel_rad;
+    let revolutions = (cm / wheel_circumference) * external_gear_ratio;
+    revolutions * 360.0
+}
+
+/// Converts degrees to centimeters
+pub fn degrees_to_cm(degrees: f64, wheel_rad: Option<f64>, external_gear_ratio: f64) -> f64 {
+    let revolutions = degrees / 360.0;
+    let wheel_rad = wheel_rad.unwrap_or(8.255); // Defaults to 8.255 cm wheels
+    let wheel_circumference = 2.0 * PI * wheel_rad;
+    (revolutions / external_gear_ratio) * wheel_circumference
 }

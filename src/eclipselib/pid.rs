@@ -104,19 +104,14 @@ impl PIDController {
     pub fn calculate(&mut self, encoder_value: f64) -> f64 {
         // Calculate error
         let error = self.target - encoder_value;
-
         // Accumulate integral
         self.integral += error;
-
         // Calculate derivative
         let derivative = error - self.previous_error;
-
         // Store error for next iteration
         self.previous_error = error;
-
         // Calculate PID output
         let output = self.kp * error + self.ki * self.integral + self.kd * derivative;
-
         output
     }
 

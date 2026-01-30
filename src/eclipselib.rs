@@ -4,7 +4,7 @@
 /*    File: eclipselib.rs                           */
 /*    Author: Andrew Bobay                          */
 /*    Date Created: Sep 23rd 2025 12:00PM           */
-/*    Date Modified: Dec 12th 2025 10:30AM          */
+/*    Date Modified: Jan 29th 2025 10:30PM          */
 /*    Description: eclipselib modules               */
 /*                                                  */
 /* ------------------------------------------------ */
