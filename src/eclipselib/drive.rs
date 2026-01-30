@@ -173,8 +173,7 @@ impl XDrive {
 
     fn opc_drive(&mut self, controller_state: ControllerState) {}
 
-    fn drive_to_coordinates(&mut self, target: Spline) {
-
+    fn drive_to_coordinates(&mut self, target: Spline) {}
 }
 
 /// Converts inches to degrees
