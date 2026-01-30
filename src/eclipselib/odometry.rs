@@ -11,8 +11,9 @@
 /* ------------------------------------------------ */
 
 use vexide::{
-    devices::{smart::imu::InertialError, PortError},
+    math::Angle,
     prelude::*,
+    smart::{PortError, imu::InertialError},
 };
 
 pub struct Odometry {
@@ -38,20 +39,18 @@ impl Odometry {
         // Function Body
     }
 
-    pub fn get_heading(&mut self) -> Result<f64, InertialError> {
+    pub fn get_heading(&mut self) -> Result<Angle, InertialError> {
         self.inertial.heading()
     }
-    pub fn get_back_position(&mut self) -> Result<Position, PortError> {
+    pub fn get_back_position(&mut self) -> Result<Angle, PortError> {
         self.rotation_back.position()
     }
-    pub fn get_front_position(&mut self) -> Result<Position, PortError> {
+    pub fn get_front_position(&mut self) -> Result<Angle, PortError> {
         self.rotation_front.position()
     }
     pub fn reset(&mut self) {
-        let _ = self.rotation_back.set_position(Position::from_degrees(0.0));
-        let _ = self
-            .rotation_front
-            .set_position(Position::from_degrees(0.0));
-        let _ = self.inertial.set_heading(0.0);
+        let _ = self.rotation_back.set_position(Angle::from_degrees(0.0));
+        let _ = self.rotation_front.set_position(Angle::from_degrees(0.0));
+        let _ = self.inertial.set_heading(Angle::from_degrees(0.0));
     }
 }

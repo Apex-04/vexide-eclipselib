@@ -10,9 +10,11 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::{devices::controller::ControllerState, prelude::*};
+use core::f64::consts::PI;
 
-use crate::eclipselib::{driveunits::*, motors::*, odometry::*};
+use vexide::{controller::ControllerState, prelude::*};
+
+use crate::eclipselib;
 
 /// Trait defining the interface for tank drive systems
 pub trait TankDrive {
@@ -21,18 +23,12 @@ pub trait TankDrive {
 
     /// Drive to a specific distance using PID control
     fn drive_to(&mut self, distance: f64);
-
-    /// Get the left drive motor group
-    fn left_drive(&mut self) -> &mut MotorGroup;
-
-    /// Get the right drive motor group
-    fn right_drive(&mut self) -> &mut MotorGroup;
 }
 
 /// Simple tank drive with basic motor control
 pub struct SimpleDrive {
-    left_drive: MotorGroup,
-    right_drive: MotorGroup,
+    left_drive: eclipselib::motor::MotorGroup,
+    right_drive: eclipselib::motor::MotorGroup,
     gear_ratio: f64,
     wheel_size: f64,
     gear_set: Gearset,
@@ -41,19 +37,19 @@ pub struct SimpleDrive {
 
 /// Advanced tank drive with odometry capabilities
 pub struct OdomDrive {
-    left_drive: MotorGroup,
-    right_drive: MotorGroup,
+    left_drive: eclipselib::motor::MotorGroup,
+    right_drive: eclipselib::motor::MotorGroup,
     gear_ratio: f64,
     wheel_size: f64,
     gear_set: Gearset,
-    odom: DualTrackOdometry,
+    odom: eclipselib::odometry::Odometry,
 }
 
 #[allow(unused)]
 impl SimpleDrive {
     pub fn new(
-        left_drive: MotorGroup,
-        right_drive: MotorGroup,
+        left_drive: eclipselib::motor::MotorGroup,
+        right_drive: eclipselib::motor::MotorGroup,
         gear_ratio: f64,
         wheel_size: f64,
         gear_set: Gearset,
@@ -73,12 +69,12 @@ impl SimpleDrive {
 #[allow(unused)]
 impl OdomDrive {
     pub fn new(
-        left_drive: MotorGroup,
-        right_drive: MotorGroup,
+        left_drive: eclipselib::motor::MotorGroup,
+        right_drive: eclipselib::motor::MotorGroup,
         gear_ratio: f64,
         wheel_size: f64,
         gear_set: Gearset,
-        odom: DualTrackOdometry,
+        odom: eclipselib::odometry::Odometry,
     ) -> Self {
         Self {
             left_drive,
@@ -98,21 +94,13 @@ impl TankDrive for SimpleDrive {
         let right_y = controller_state.right_stick.y();
 
         // Set motor voltages based on joystick input
-        let _ = self.left_drive.set_voltage((left_y * 12000.0) as i32);
-        let _ = self.right_drive.set_voltage((right_y * 12000.0) as i32);
+        let _ = self.left_drive.set_voltage((left_y * 12000.0));
+        let _ = self.right_drive.set_voltage((right_y * 12000.0));
     }
 
     fn drive_to(&mut self, distance: f64) {
         // TODO: Implement PID control to drive to distance
         // Convert distance (inches) to encoder ticks based on gear_ratio and wheel_size
-    }
-
-    fn left_drive(&mut self) -> &mut MotorGroup {
-        &mut self.left_drive
-    }
-
-    fn right_drive(&mut self) -> &mut MotorGroup {
-        &mut self.right_drive
     }
 }
 
@@ -123,8 +111,8 @@ impl TankDrive for OdomDrive {
         let right_y = controller_state.right_stick.y();
 
         // Set motor voltages based on joystick input
-        let _ = self.left_drive.set_voltage((left_y * 12000.0) as i32);
-        let _ = self.right_drive.set_voltage((right_y * 12000.0) as i32);
+        let _ = self.left_drive.set_voltage((left_y * 12000.0));
+        let _ = self.right_drive.set_voltage((right_y * 12000.0));
 
         // Update odometry with current motor positions
         // self.dual_odom.update();
@@ -133,30 +121,22 @@ impl TankDrive for OdomDrive {
     fn drive_to(&mut self, distance: f64) {
         // TODO: Implement odometry-based PID control to drive to distance
     }
-
-    fn left_drive(&mut self) -> &mut MotorGroup {
-        &mut self.left_drive
-    }
-
-    fn right_drive(&mut self) -> &mut MotorGroup {
-        &mut self.right_drive
-    }
 }
 
 pub struct XDrive {
-    east_drive: MotorGroup, // Front Left && Back Right
-    west_drive: MotorGroup, // Front Right && Back Left
+    east_drive: eclipselib::motor::MotorGroup, // Front Left && Back Right
+    west_drive: eclipselib::motor::MotorGroup, // Front Right && Back Left
     gear_ratio: f64,
     wheel_size: f64,
     gear_set: Gearset,
-    spline: Spine,
+    spline: eclipselib::spline::Spline,
 }
 
 #[allow(unused)]
 impl XDrive {
     fn new(
-        east_drive: MotorGroup,
-        west_drive: MotorGroup,
+        east_drive: eclipselib::motor::MotorGroup,
+        west_drive: eclipselib::motor::MotorGroup,
         gear_ratio: f64,
         wheel_size: f64,
         gear_set: Gearset,
@@ -167,13 +147,13 @@ impl XDrive {
             gear_ratio,
             wheel_size,
             gear_set,
-            spline: spline(0.0, 0.0, 0.0),
+            spline: eclipselib::spline::spline(0.0, 0.0, 0.0),
         }
     }
 
     fn opc_drive(&mut self, controller_state: ControllerState) {}
 
-    fn drive_to_coordinates(&mut self, target: Spline) {}
+    fn drive_to_coordinates(&mut self, target: eclipselib::spline::Spline) {}
 }
 
 /// Converts inches to degrees

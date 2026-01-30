@@ -13,24 +13,18 @@
 // cargo v5 build
 // to upload the file run the command
 // cargo v5 upload --slot # --release
-#![no_main]
-#![no_std]
 
 use autons::{
     prelude::*,
-    simple::{route, SimpleSelect},
+    simple::{SimpleSelect, route},
 };
 use vexide::prelude::*;
 mod eclipselib;
 mod robot;
 
-extern crate alloc;
-pub use alloc::vec;
-
 struct Robot {
     controller: Controller,
-    swerve: swervelib::swervedrive::SwerveDrive,
-    smartmtr: eclipselib::motors::AdvMotor,
+    swerve: eclipselib::swerve::swervedrive::DualSwerveDrive,
 }
 
 impl Robot {
@@ -60,39 +54,19 @@ impl SelectCompete for Robot {
 async fn main(peripherals: Peripherals) {
     let robot = Robot {
         controller: peripherals.primary_controller,
-        swerve: swervelib::swervedrive::SwerveDrive::new(
-            swervelib::swervemod::SwerveModule::new(
-                swervelib::swervemotors::SwerveMotor::new(
-                    peripherals.port_1,
-                    Gearset::Blue,
-                    Direction::Forward,
-                ),
-                swervelib::swervemotors::SwerveMotor::new(
-                    peripherals.port_2,
-                    Gearset::Blue,
-                    Direction::Forward,
-                ),
+        swerve: eclipselib::swerve::swervedrive::DualSwerveDrive::new(
+            eclipselib::swerve::swervemod::SwerveModule::new22w(
+                Motor::new(peripherals.port_1, Gearset::Blue, Direction::Forward),
+                Motor::new(peripherals.port_2, Gearset::Blue, Direction::Forward),
                 RotationSensor::new(peripherals.port_3, Direction::Forward),
             ),
-            swervelib::swervemod::SwerveModule::new(
-                swervelib::swervemotors::SwerveMotor::new(
-                    peripherals.port_4,
-                    Gearset::Blue,
-                    Direction::Forward,
-                ),
-                swervelib::swervemotors::SwerveMotor::new(
-                    peripherals.port_5,
-                    Gearset::Blue,
-                    Direction::Forward,
-                ),
+            eclipselib::swerve::swervemod::SwerveModule::new22w(
+                Motor::new(peripherals.port_4, Gearset::Blue, Direction::Forward),
+                Motor::new(peripherals.port_5, Gearset::Blue, Direction::Forward),
                 RotationSensor::new(peripherals.port_6, Direction::Forward),
             ),
             InertialSensor::new(peripherals.port_7),
-        ),
-        smartmtr: eclipselib::motors::AdvMotor::new(
-            peripherals.port_8,
-            Gearset::Blue,
-            Direction::Forward,
+            eclipselib::pid::PIDController::set_gains(0.0, 0.0, 0.0),
         ),
     };
 

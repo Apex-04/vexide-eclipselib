@@ -8,9 +8,9 @@
 /*    Description: Robot Constructors               */
 /*                                                  */
 /* ------------------------------------------------ */
+
 use vexide::prelude::*;
 
-use crate::eclipselib;
 /// How to use robot.rs
 ///
 /// robot.rs is a dedicated file to define robot subsystems.
@@ -22,7 +22,7 @@ use crate::eclipselib;
 
 struct LiftExample {
     motor: Motor,
-    encoder: Rotation,
+    encoder: RotationSensor,
 }
 #[allow(unused)]
 impl LiftExample {}

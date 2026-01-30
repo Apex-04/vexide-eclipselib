@@ -10,7 +10,14 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::prelude::*;
+use vexide::{
+    math::Angle,
+    prelude::*,
+    smart::{PortError, motor::BrakeMode},
+};
+
+extern crate alloc;
+use alloc::vec::Vec;
 
 pub struct MotorGroup {
     motors: Vec<Motor>,
@@ -23,7 +30,7 @@ impl MotorGroup {
     }
 
     /// Set voltage for all motors in the group (in millivolts, -12000 to 12000)
-    pub fn set_voltage(&mut self, millivolts: i32) -> Result<(), MotorError> {
+    pub fn set_voltage(&mut self, millivolts: f64) -> Result<(), PortError> {
         for motor in self.motors.iter_mut() {
             motor.set_voltage(millivolts)?;
         }
@@ -31,20 +38,20 @@ impl MotorGroup {
     }
 
     /// Stop all motors by setting voltage to 0
-    pub fn stop(&mut self) -> Result<(), MotorError> {
-        self.set_voltage(0)
+    pub fn stop(&mut self) -> Result<(), PortError> {
+        self.set_voltage(0.0)
     }
 
-    /// Brake all motors with the specified brake mode
-    pub fn brake(&mut self, mode: BrakeMode) -> Result<(), MotorError> {
+    //  Brake all motors with the specified brake mode
+    pub fn brake(&mut self, mode: BrakeMode) -> Result<(), PortError> {
         for motor in self.motors.iter_mut() {
-            motor.set_brake_mode(mode)?;
+            motor.brake(mode);
         }
-        self.set_voltage(0)
+        Ok(())
     }
 
     /// Get the average position of all motors in the group (in degrees)
-    pub fn position(&self) -> Result<f64, MotorError> {
+    pub fn position(&self) -> Result<f64, PortError> {
         let mut total = 0.0;
         for motor in self.motors.iter() {
             total += motor.position()?.as_degrees();
@@ -52,37 +59,18 @@ impl MotorGroup {
         Ok(total / self.motors.len() as f64)
     }
 
-    /// Get the average velocity of all motors in the group (in RPM)
-    pub fn velocity(&self) -> Result<f64, MotorError> {
-        let mut total = 0.0;
-        for motor in self.motors.iter() {
-            total += motor.velocity()?.as_rpm();
-        }
-        Ok(total / self.motors.len() as f64)
-    }
-
     /// Reset position for all motors to 0
-    pub fn reset_position(&mut self) -> Result<(), MotorError> {
+    pub fn reset_position(&mut self) -> Result<(), PortError> {
         for motor in self.motors.iter_mut() {
             motor.reset_position()?;
         }
         Ok(())
     }
 
-    /// Get the average temperature of all motors in the group (in Celsius)
-    pub fn temperature(&self) -> Result<f64, MotorError> {
-        let mut total = 0.0;
-        for motor in self.motors.iter() {
-            total += motor.temperature()?.as_celsius();
-        }
-        Ok(total / self.motors.len() as f64)
-    }
-
     /// Spin motors to a target position using position control
-    pub fn spin_to(&mut self, target_degrees: f64, max_voltage: i32) -> Result<(), MotorError> {
+    pub fn spin_to(&mut self, target_degrees: f64, rpm: i32) -> Result<(), PortError> {
         for motor in self.motors.iter_mut() {
-            // Set target position for built-in position control
-            motor.set_target(target_degrees, max_voltage)?;
+            motor.set_position_target(Angle::from_degrees(target_degrees), rpm)?;
         }
         Ok(())
     }

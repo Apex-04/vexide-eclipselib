@@ -67,7 +67,7 @@ pub fn calc_gains(ku: f64, tu: f64, mode: i8) -> (f64, f64, f64) {
         }
         // default / invalid mode
         _ => {
-            println!("Invalid mode: must be between 1 and 7.");
+            println!("Invalid mode: must be between 1 and 7.")
         }
     }
     (kp, ki, kd)

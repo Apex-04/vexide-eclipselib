@@ -9,13 +9,16 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::{devices::PortError, prelude::*};
+extern crate alloc;
+use alloc::vec;
+
+use vexide::{math::Angle, prelude::*, smart::PortError};
 
 const WHEEL_SIZE: f64 = 3.25;
 
 pub struct SwerveModule {
-    smartmtr_top: Vec<Motor>,
-    smartmtr_bottom: Vec<Motor>,
+    smartmtr_top: vec::Vec<Motor>,
+    smartmtr_bottom: vec::Vec<Motor>,
     azimuth: RotationSensor,
 }
 
@@ -45,7 +48,7 @@ impl SwerveModule {
         }
     }
 
-    pub fn get_azimuth(&mut self) -> Result<Position, PortError> {
+    pub fn get_azimuth(&mut self) -> Result<Angle, PortError> {
         self.azimuth.position()
     }
 }

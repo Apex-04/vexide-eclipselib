@@ -10,7 +10,7 @@
 /*                                                  */
 /* ------------------------------------------------ */
 
-use vexide::prelude::*;
+use vexide::{adi::AdiPort, prelude::*};
 extern crate alloc;
 pub use alloc::vec;
 
