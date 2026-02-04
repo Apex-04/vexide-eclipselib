@@ -1,3 +1,5 @@
+Notice: This project has been Migrated to Codeberg, Why: in 2018 Microsoft bought github. And for a while github remained competent, however as of recently I personally have noticed a sharp decline in the usability of github, from AI being put into everything, to the experience of the github desktop app being downtright unusable at times. the codeberg repo is linked here: [https://codeberg.org/apex04/vexide-eclipselib](https://codeberg.org/apex04/vexide-eclipselib)
+
 # Eclipse Lib
 eclipselib is library to extend the base features of vexide, that aims to provide higher level  constructors to vexide while also keeping a clear system to design the program for your robot.
 
